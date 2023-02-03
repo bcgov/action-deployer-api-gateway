@@ -1,0 +1,48 @@
+name: API Services Portal configuration
+description: Publishes an api through the gateway
+branding:
+  icon: message-circle
+  color: blue
+
+inputs:
+  ### Required
+  namespace:
+    description: The namespace of you routes collection
+    required: true
+  client_id:
+    description: Namespace's Client ID from API Services Portal
+    required: true
+  client_secret:
+    description: Namespace's Client Secret from API Services Portal
+    required: true
+  file:
+    description: Template file (e.g. frontend/service.gwa.yml)
+    required: true
+
+  ### Typical / recommended
+  production:
+    description: Set the environment to be used as the production environment
+    value: "true"
+    
+runs:
+  using: composite
+  steps:
+    - uses: actions/checkout@v3
+
+    - name: Publish API
+      shell: bash
+      run: |
+        curl -L -O https://github.com/bcgov/gwa-cli/releases/download/v1.3.1/gwa_v1.3.1_linux_x64.zip
+        unzip gwa_v1.3.1_linux_x64.zip        
+
+        ENV="-P"
+        if [ "${{ inputs.production }}" == "false" ]; then
+          ENV="-T"
+        fi
+
+        ./gwa init ${ENV} \
+          --namespace=${{ inputs.namespace }} \
+          --client-id=${{ inputs.client_id }} \
+          --client-secret=${{ inputs.client_secret }}
+
+        ./gwa pg ${{ inputs.file }}
