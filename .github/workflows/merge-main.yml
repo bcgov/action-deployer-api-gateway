@@ -16,7 +16,7 @@ jobs:
     name: Action release    
     runs-on: ubuntu-22.04    
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         
       - name: Backing up Changelog
         run: |
