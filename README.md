@@ -4,7 +4,7 @@
 [![MIT License](https://img.shields.io/github/license/bcgov-nr/action-gwa-publish.svg)](/LICENSE)
 [![Lifecycle](https://img.shields.io/badge/Lifecycle-Experimental-339999)](https://github.com/bcgov/repomountie/blob/master/doc/lifecycle-badges.md)
 
-# API Services Portal configuration
+# Action Deployer API Gateway
 
 This action publishes an api through the BC Government Gateway gateway.
 
