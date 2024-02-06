@@ -1,5 +1,5 @@
-name: API Services Portal configuration
-description: Publishes an api through the gateway
+name: API Gateway Deployer
+description: API Gateway deployer
 branding:
   icon: message-circle
   color: blue
@@ -23,26 +23,29 @@ inputs:
   production:
     description: Set the environment to be used as the production environment
     value: "true"
-    
+
 runs:
   using: composite
   steps:
     - uses: actions/checkout@v4
 
-    - name: Publish API
+    - name: Apply API Gateway configuration
       shell: bash
       run: |
-        curl -L -O https://github.com/bcgov/gwa-cli/releases/download/v1.3.1/gwa_v1.3.1_linux_x64.zip
-        unzip gwa_v1.3.1_linux_x64.zip        
+        curl -s -L -O https://github.com/bcgov/gwa-cli/releases/download/v2.0.15/gwa_Linux_x86_64.tgz
+        tar -xzf gwa_Linux_x86_64.tgz
+        export PATH=`pwd`:$PATH
+        gwa -v
 
-        ENV="-P"
+        gwa config set host api.gov.bc.ca
         if [ "${{ inputs.production }}" == "false" ]; then
-          ENV="-T"
+          gwa config set host api-gov-bc-ca.test.api.gov.bc.ca
         fi
 
-        ./gwa init ${ENV} \
-          --namespace=${{ inputs.namespace }} \
+        gwa config set namespace ${{ inputs.namespace }}
+        gwa login \
           --client-id=${{ inputs.client_id }} \
           --client-secret=${{ inputs.client_secret }}
 
-        ./gwa pg ${{ inputs.file }}
+        gwa pg --debug ${{ inputs.file }}
+        # gwa apply --debug -i ${{ inputs.file }}
