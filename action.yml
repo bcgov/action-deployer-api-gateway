@@ -40,9 +40,10 @@ runs:
           ENV="-T"
         fi
 
-        ./gwa init ${ENV} \
-          --namespace=${{ inputs.namespace }} \
+        ./gwa login \
           --client-id=${{ inputs.client_id }} \
           --client-secret=${{ inputs.client_secret }}
+          
+        ./gwa config set gateway ${{ inputs.namespace }}
 
         ./gwa pg ${{ inputs.file }}
