@@ -36,7 +36,7 @@ runs:
         tar -xvzf gwa_Linux_x86_64.tgz        
 
         if [ "${{ inputs.production }}" == "false" ]; then
-          gwa config set host api-gov-bc-ca.test.api.gov.bc.ca
+          ./gwa config set host api-gov-bc-ca.test.api.gov.bc.ca
         fi
 
         ./gwa login \
