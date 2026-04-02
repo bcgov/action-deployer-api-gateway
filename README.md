@@ -36,7 +36,7 @@ This tool is currently based on the existing documentation provided by 1team.
 
     # Use production environment
     # By default, set as true
-    production: Set the environment to be used as the production environment
+    production: Use production environment (true, default) or test environment (false)
 
     
 ```
